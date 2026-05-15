@@ -1,5 +1,5 @@
 # EEG-Based State Classification
-## Preprocessing, Regularization & Generalization Study
+## Preprocessing, Regularization & Generalization Study 
 
 **Author:** Sadiq Mansoor  
 **Course:** Machine Learning Theory — Semester 8  
