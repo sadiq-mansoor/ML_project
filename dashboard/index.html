@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EEG Research Dashboard — ML Experiment Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
+        <div>
+          <h1>EEG Research<br>Dashboard</h1>
+        </div>
+      </div>
+      <div class="subtitle">ML Experiment Analysis Suite</div>
+    </div>
+    <div class="sidebar-author">
+      Author: <span>Sadiq Mansoor</span> &nbsp;·&nbsp; 2024
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a class="nav-item active" onclick="showPage('overview')" data-page="overview">
+        <i class="fa-solid fa-house"></i> Overview
+      </a>
+      <a class="nav-item" onclick="showPage('datasets')" data-page="datasets">
+        <i class="fa-solid fa-database"></i> Datasets
+      </a>
+      <a class="nav-item" onclick="showPage('preprocessing')" data-page="preprocessing">
+        <i class="fa-solid fa-filter"></i> Preprocessing
+      </a>
+      <a class="nav-item" onclick="showPage('regularization')" data-page="regularization">
+        <i class="fa-solid fa-sliders"></i> Regularization
+      </a>
+      <a class="nav-item" onclick="showPage('imbalance')" data-page="imbalance">
+        <i class="fa-solid fa-scale-balanced"></i> Imbalance
+      </a>
+      <a class="nav-item" onclick="showPage('overfitting')" data-page="overfitting">
+        <i class="fa-solid fa-chart-line"></i> Overfitting
+      </a>
+      <a class="nav-item" onclick="showPage('results')" data-page="results">
+        <i class="fa-solid fa-table"></i> Results
+      </a>
+      <a class="nav-item" onclick="showPage('failure')" data-page="failure">
+        <i class="fa-solid fa-triangle-exclamation"></i> Failure Analysis
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="run-btn">
+        <i class="fa-solid fa-play"></i> View Full Report
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Overview</div>
+        <div class="topbar-meta">EEG-Based State Classification · Logistic Regression Study</div>
+      </div>
+      <div class="topbar-badges">
+        <span class="badge badge-blue">3 Datasets</span>
+        <span class="badge badge-green">5 Hypotheses</span>
+        <span class="badge badge-purple">10 Tables</span>
+        <span class="badge badge-cyan">Best PR-AUC 0.811</span>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 1 — OVERVIEW
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page active" id="page-overview">
+      <div class="hero">
+        <div class="hero-tag"><i class="fa-solid fa-flask"></i> Research Study</div>
+        <h1>EEG-Based <span>State Classification</span></h1>
+        <div class="hero-question">
+          "How do preprocessing pipelines, regularization strategies, and class-imbalance
+          handling interact to affect logistic regression performance on EEG datasets with
+          varying characteristics?"
+        </div>
+        <div class="hero-meta">
+          <div class="hero-meta-item"><i class="fa-solid fa-database"></i> 3 EEG Datasets</div>
+          <div class="hero-meta-item"><i class="fa-solid fa-file"></i> 547 Data Files</div>
+          <div class="hero-meta-item"><i class="fa-solid fa-vial"></i> 5 Hypotheses Tested</div>
+          <div class="hero-meta-item"><i class="fa-solid fa-table"></i> 10 Result Tables</div>
+          <div class="hero-meta-item"><i class="fa-solid fa-code-branch"></i> 3 Pipelines (A, B, C)</div>
+        </div>
+      </div>
+
+      <!-- Bias-Variance Equation -->
+      <div class="equation-block mb-24">
+        <div class="equation">
+          <span class="eq-term">Total Error</span>
+          <span class="eq-op">=</span>
+          <span class="eq-term">Bias²</span>
+          <span class="eq-op">+</span>
+          <span class="eq-term">Variance</span>
+          <span class="eq-op">+</span>
+          <span class="eq-term">Noise</span>
+        </div>
+        <div class="equation-caption">
+          The fundamental bias-variance decomposition guiding all regularization and pipeline design decisions in this study.
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-icon"><i class="fa-solid fa-database"></i></div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-label">Datasets</div>
+          <div class="kpi-sub">UCI Seizure · Bonn EEG · Eye State</div>
+        </div>
+        <div class="kpi-card cyan">
+          <div class="kpi-icon"><i class="fa-solid fa-file-lines"></i></div>
+          <div class="kpi-value">547</div>
+          <div class="kpi-label">Data Files</div>
+          <div class="kpi-sub">Across all three datasets</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="kpi-value">0.811</div>
+          <div class="kpi-label">Best PR-AUC</div>
+          <div class="kpi-sub">Bonn EEG · Pipeline A</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-icon"><i class="fa-solid fa-gear"></i></div>
+          <div class="kpi-value" style="font-size:14px;padding-top:6px;">Pipe A + L2</div>
+          <div class="kpi-label">Best Config</div>
+          <div class="kpi-sub">C=1 · Bonn EEG dataset</div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-icon"><i class="fa-solid fa-vial"></i></div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-label">Hypotheses</div>
+          <div class="kpi-sub">H1–H5 · Kruskal-Wallis / Mann-Whitney</div>
+        </div>
+        <div class="kpi-card red">
+          <div class="kpi-icon"><i class="fa-solid fa-table"></i></div>
+          <div class="kpi-value">10</div>
+          <div class="kpi-label">Result Tables</div>
+          <div class="kpi-sub">Holdout · Baseline · Reg · Imbalance</div>
+        </div>
+      </div>
+
+      <!-- Dataset Summary Cards -->
+      <div class="section-header">
+        <h2><i class="fa-solid fa-database"></i> Dataset Summary</h2>
+        <p>Three EEG datasets with distinct characteristics, class distributions, and classification challenges.</p>
+      </div>
+      <div class="grid-3 mb-32">
+        <div class="dataset-card">
+          <div class="dataset-header">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary)">UCI Seizure</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Seizure Detection</div>
+            </div>
+            <div class="dataset-icon" style="background:rgba(252,129,129,0.12);color:var(--accent-red)">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val">11,500</div><div class="ds-stat-lbl">Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">178</div><div class="ds-stat-lbl">Features</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">1:4</div><div class="ds-stat-lbl">Class Ratio</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">0.452</div><div class="ds-stat-lbl">Holdout PR-AUC</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Seizure class (minority)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:20%;background:var(--accent-red)"></div></div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:6px;margin-bottom:4px">Non-seizure (majority)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:80%;background:var(--accent-blue)"></div></div>
+          </div>
+        </div>
+
+        <div class="dataset-card">
+          <div class="dataset-header">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary)">Bonn EEG</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Ictal vs Non-Ictal</div>
+            </div>
+            <div class="dataset-icon" style="background:rgba(104,211,145,0.12);color:var(--accent-green)">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val">500</div><div class="ds-stat-lbl">Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">6</div><div class="ds-stat-lbl">Features (eng.)</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">mild</div><div class="ds-stat-lbl">Imbalance</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">0.811</div><div class="ds-stat-lbl">Holdout PR-AUC</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Ictal (seizure) class</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--accent-green)"></div></div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:6px;margin-bottom:4px">Non-ictal class</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--accent-blue)"></div></div>
+          </div>
+        </div>
+
+        <div class="dataset-card">
+          <div class="dataset-header">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary)">EEG Eye State</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Eye Open / Closed</div>
+            </div>
+            <div class="dataset-icon" style="background:rgba(99,179,237,0.12);color:var(--accent-blue)">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val">14,980</div><div class="ds-stat-lbl">Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">14</div><div class="ds-stat-lbl">Features</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">~45:55</div><div class="ds-stat-lbl">Class Ratio</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">0.593</div><div class="ds-stat-lbl">Holdout PR-AUC</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Eye closed (class 1)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--accent-cyan)"></div></div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:6px;margin-bottom:4px">Eye open (class 0)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:55%;background:var(--accent-blue)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiment Architecture -->
+      <div class="section-header">
+        <h2><i class="fa-solid fa-diagram-project"></i> Experiment Architecture</h2>
+        <p>End-to-end workflow from raw EEG data to final evaluation metrics.</p>
+      </div>
+      <div class="card mb-32">
+        <div class="pipeline-flow" style="justify-content:center;flex-wrap:wrap;gap:8px;">
+          <div class="pipeline-step" style="background:rgba(99,179,237,0.08);border-color:rgba(99,179,237,0.3)">
+            <i class="fa-solid fa-database" style="color:var(--accent-blue)"></i>
+            <span style="color:var(--text-primary)">Raw EEG Data</span>
+          </div>
+          <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="pipeline-step" style="background:rgba(159,122,234,0.08);border-color:rgba(159,122,234,0.3)">
+            <i class="fa-solid fa-filter" style="color:var(--accent-purple)"></i>
+            <span style="color:var(--text-primary)">Preprocessing</span>
+          </div>
+          <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="pipeline-step" style="background:rgba(79,209,197,0.08);border-color:rgba(79,209,197,0.3)">
+            <i class="fa-solid fa-scale-balanced" style="color:var(--accent-cyan)"></i>
+            <span style="color:var(--text-primary)">Imbalance Handling</span>
+          </div>
+          <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="pipeline-step" style="background:rgba(104,211,145,0.08);border-color:rgba(104,211,145,0.3)">
+            <i class="fa-solid fa-sliders" style="color:var(--accent-green)"></i>
+            <span style="color:var(--text-primary)">LogReg + Regularization</span>
+          </div>
+          <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="pipeline-step" style="background:rgba(246,173,85,0.08);border-color:rgba(246,173,85,0.3)">
+            <i class="fa-solid fa-chart-bar" style="color:var(--accent-orange)"></i>
+            <span style="color:var(--text-primary)">Evaluation</span>
+          </div>
+          <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="pipeline-step" style="background:rgba(252,129,129,0.08);border-color:rgba(252,129,129,0.3)">
+            <i class="fa-solid fa-table" style="color:var(--accent-red)"></i>
+            <span style="color:var(--text-primary)">Results</span>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">PREPROCESSING</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Pipeline A: StandardScaler + MI SelectKBest(k=20)<br>Pipeline B: StandardScaler + PCA(95%)<br>Pipeline C: Wavelet + StandardScaler + PCA(95%)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--accent-purple);margin-bottom:6px">REGULARIZATION</div>
+            <div style="font-size:11px;color:var(--text-secondary)">L1 (Lasso) · L2 (Ridge) · ElasticNet (α=0.5)<br>C values: 0.001, 0.01, 0.1, 1, 10, 100<br>Cross-validated on training set</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--accent-cyan);margin-bottom:6px">IMBALANCE</div>
+            <div style="font-size:11px;color:var(--text-secondary)">SMOTE oversampling<br>Random undersampling<br>Class weight balancing</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--accent-orange);margin-bottom:6px">EVALUATION</div>
+            <div style="font-size:11px;color:var(--text-secondary)">PR-AUC (primary metric)<br>F1, Recall, Precision, Accuracy<br>Kruskal-Wallis & Mann-Whitney tests</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hypothesis Overview -->
+      <div class="section-header">
+        <h2><i class="fa-solid fa-vial"></i> Hypothesis Overview</h2>
+        <p>Five statistical hypotheses tested using non-parametric tests (α = 0.05).</p>
+      </div>
+      <div class="hyp-grid">
+        <div class="hyp-card">
+          <div class="hyp-header">
+            <span class="hyp-id">H1</span>
+            <span class="hyp-result partial">Partial</span>
+          </div>
+          <div class="hyp-title">Pipeline Effect on Performance</div>
+          <div class="hyp-desc">Does preprocessing pipeline choice significantly affect PR-AUC across datasets?</div>
+          <div class="hyp-pval">UCI p=<span>0.166</span> (n.s.) · Eye State p=<span style="color:var(--accent-green)">0.000082</span> ✓</div>
+        </div>
+        <div class="hyp-card">
+          <div class="hyp-header">
+            <span class="hyp-id">H2</span>
+            <span class="hyp-result rejected">Not Sig.</span>
+          </div>
+          <div class="hyp-title">Regularization Generalization</div>
+          <div class="hyp-desc">Does regularization type (L1/L2/EN) significantly affect holdout PR-AUC?</div>
+          <div class="hyp-pval">L1 vs L2 p=<span>0.914</span> · L1 vs EN p=<span>0.698</span> · L2 vs EN p=<span>0.769</span></div>
+        </div>
+        <div class="hyp-card">
+          <div class="hyp-header">
+            <span class="hyp-id">H3</span>
+            <span class="hyp-result rejected">Not Sig.</span>
+          </div>
+          <div class="hyp-title">ElasticNet Advantage</div>
+          <div class="hyp-desc">Does ElasticNet outperform pure L1/L2 regularization on Bonn EEG?</div>
+          <div class="hyp-pval">L1 vs L2 p=<span>0.380</span> · L1 vs EN p=<span>0.544</span> · L2 vs EN p=<span>0.314</span></div>
+        </div>
+        <div class="hyp-card">
+          <div class="hyp-header">
+            <span class="hyp-id">H4</span>
+            <span class="hyp-result rejected">Not Sig.</span>
+          </div>
+          <div class="hyp-title">Imbalance × Regularization</div>
+          <div class="hyp-desc">Does imbalance handling method interact with regularization type?</div>
+          <div class="hyp-pval">All pairwise comparisons p &gt; <span>0.2</span> (none significant)</div>
+        </div>
+        <div class="hyp-card">
+          <div class="hyp-header">
+            <span class="hyp-id">H5</span>
+            <span class="hyp-result accepted">SIGNIFICANT</span>
+          </div>
+          <div class="hyp-title">Polynomial Overfitting</div>
+          <div class="hyp-desc">Does polynomial feature expansion cause significant overfitting vs baseline?</div>
+          <div class="hyp-pval">Baseline vs Poly p=<span style="color:var(--accent-red)">0.0000031</span> ★ Highly Significant</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 2 — DATASETS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page" id="page-datasets">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-database"></i> Datasets</h2>
+        <p>Three EEG datasets with distinct recording conditions, feature spaces, and classification challenges.</p>
+      </div>
+
+      <!-- Dataset Detail Cards -->
+      <div class="grid-3 mb-32">
+        <!-- UCI Seizure -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-red)"><i class="fa-solid fa-bolt"></i> UCI Seizure Dataset</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px">
+            Epileptic seizure recognition dataset from UCI ML Repository. Each sample represents a 1-second EEG segment
+            with 178 time-domain amplitude values. The original 5-class dataset was binarized: class 1 (seizure) vs
+            classes 2–5 (non-seizure), creating a severe 1:4 class imbalance.
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val" style="color:var(--accent-red)">11,500</div><div class="ds-stat-lbl">Total Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">178</div><div class="ds-stat-lbl">Raw Features</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">2,300</div><div class="ds-stat-lbl">Seizure (pos)</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">9,200</div><div class="ds-stat-lbl">Non-seizure (neg)</div></div>
+          </div>
+          <div style="margin-top:16px;padding:10px;background:rgba(252,129,129,0.06);border-radius:8px;border:1px solid rgba(252,129,129,0.15)">
+            <div style="font-size:10px;font-weight:700;color:var(--accent-red);margin-bottom:4px">KEY CHALLENGE</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Severe class imbalance (1:4) combined with high dimensionality (178 features) makes standard accuracy misleading. PR-AUC is the primary metric.</div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">HOLDOUT PERFORMANCE</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+              <div>PR-AUC: <span style="color:var(--accent-orange);font-weight:700">0.452</span></div>
+              <div>F1: <span style="color:var(--accent-orange);font-weight:700">0.043</span></div>
+              <div>Recall: <span style="color:var(--accent-red);font-weight:700">0.022</span></div>
+              <div>Precision: <span style="color:var(--accent-green);font-weight:700">1.000</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bonn EEG -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-green)"><i class="fa-solid fa-wave-square"></i> Bonn EEG Dataset</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px">
+            University of Bonn epilepsy dataset with 5 classes (Z, O, N, F, S). Binary classification: ictal (S class)
+            vs non-ictal (all others). Raw signals have 4097 time points per segment; engineered features reduce this
+            to 6 statistical descriptors (mean, std, skewness, kurtosis, energy, zero-crossing rate).
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val" style="color:var(--accent-green)">500</div><div class="ds-stat-lbl">Total Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">6</div><div class="ds-stat-lbl">Eng. Features</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">100</div><div class="ds-stat-lbl">Ictal (pos)</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">400</div><div class="ds-stat-lbl">Non-ictal (neg)</div></div>
+          </div>
+          <div style="margin-top:16px;padding:10px;background:rgba(104,211,145,0.06);border-radius:8px;border:1px solid rgba(104,211,145,0.15)">
+            <div style="font-size:10px;font-weight:700;color:var(--accent-green);margin-bottom:4px">KEY CHALLENGE</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Small dataset (500 samples) with only 6 features after engineering. Pipeline C (wavelet denoising) was designed specifically for this dataset's raw signal characteristics.</div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">HOLDOUT PERFORMANCE</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+              <div>PR-AUC: <span style="color:var(--accent-green);font-weight:700">0.811</span></div>
+              <div>F1: <span style="color:var(--accent-green);font-weight:700">0.618</span></div>
+              <div>Recall: <span style="color:var(--accent-cyan);font-weight:700">0.525</span></div>
+              <div>Precision: <span style="color:var(--accent-cyan);font-weight:700">0.750</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EEG Eye State -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-blue)"><i class="fa-solid fa-eye"></i> EEG Eye State Dataset</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px">
+            Continuous EEG recording from a single subject with eye state labels (open=0, closed=1). 14 EEG channels
+            recorded at 128 Hz. The dataset is nearly balanced (~45:55) but exhibits strong temporal autocorrelation,
+            making random splits potentially optimistic.
+          </div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><div class="ds-stat-val" style="color:var(--accent-blue)">14,980</div><div class="ds-stat-lbl">Total Samples</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">14</div><div class="ds-stat-lbl">EEG Channels</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">~6,741</div><div class="ds-stat-lbl">Eye closed (pos)</div></div>
+            <div class="ds-stat"><div class="ds-stat-val">~8,239</div><div class="ds-stat-lbl">Eye open (neg)</div></div>
+          </div>
+          <div style="margin-top:16px;padding:10px;background:rgba(99,179,237,0.06);border-radius:8px;border:1px solid rgba(99,179,237,0.15)">
+            <div style="font-size:10px;font-weight:700;color:var(--accent-blue);margin-bottom:4px">KEY CHALLENGE</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Temporal autocorrelation in continuous recording. Pipeline choice has a statistically significant effect (H1: p=0.000082), with Pipeline A substantially outperforming Pipeline B.</div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">HOLDOUT PERFORMANCE</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+              <div>PR-AUC: <span style="color:var(--accent-blue);font-weight:700">0.593</span></div>
+              <div>F1: <span style="color:var(--accent-blue);font-weight:700">0.442</span></div>
+              <div>Recall: <span style="color:var(--accent-cyan);font-weight:700">0.367</span></div>
+              <div>Precision: <span style="color:var(--accent-cyan);font-weight:700">0.558</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="section-header">
+        <h2><i class="fa-solid fa-chart-bar"></i> Class Distribution &amp; Feature Comparison</h2>
+        <p>Visual comparison of class balance and feature dimensionality across datasets.</p>
+      </div>
+      <div class="grid-2 mb-32">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Class Distribution by Dataset</div>
+          <div class="chart-container" style="height:260px">
+            <canvas id="classDistChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-ruler-horizontal"></i> Feature Count Comparison</div>
+          <div class="chart-container" style="height:260px">
+            <canvas id="featureCountChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dataset Comparison Table -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Dataset Characteristics Summary</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Samples</th>
+                <th>Raw Features</th>
+                <th>Eng. Features</th>
+                <th>Pos Class</th>
+                <th>Neg Class</th>
+                <th>Imbalance Ratio</th>
+                <th>Task</th>
+                <th>Holdout PR-AUC</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--accent-red);font-weight:600">UCI Seizure</td>
+                <td>11,500</td>
+                <td>178</td>
+                <td>20 (MI top-k)</td>
+                <td>2,300</td>
+                <td>9,200</td>
+                <td class="td-warn">1:4 (severe)</td>
+                <td>Seizure detection</td>
+                <td class="td-warn">0.452</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-green);font-weight:600">Bonn EEG</td>
+                <td>500</td>
+                <td>4,097 (raw)</td>
+                <td>6 (engineered)</td>
+                <td>100</td>
+                <td>400</td>
+                <td class="td-highlight">1:4 (mild)</td>
+                <td>Ictal vs non-ictal</td>
+                <td class="td-best">0.811</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-blue);font-weight:600">EEG Eye State</td>
+                <td>14,980</td>
+                <td>14</td>
+                <td>14 (all used)</td>
+                <td>~6,741</td>
+                <td>~8,239</td>
+                <td class="td-best">~45:55 (balanced)</td>
+                <td>Eye open/closed</td>
+                <td class="td-highlight">0.593</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 3 — PREPROCESSING
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page" id="page-preprocessing">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-filter"></i> Preprocessing Pipelines</h2>
+        <p>Three preprocessing pipelines designed to evaluate different feature extraction and dimensionality reduction strategies.</p>
+      </div>
+
+      <!-- Pipeline Flow Diagrams -->
+      <div class="grid-3 mb-32">
+        <!-- Pipeline A -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-blue)"><i class="fa-solid fa-a"></i> Pipeline A — MI Feature Selection</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Applied to: UCI Seizure, EEG Eye State</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            <div class="pipeline-step" style="justify-content:center">
+              <i class="fa-solid fa-database"></i> Raw Features
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(99,179,237,0.08);border-color:rgba(99,179,237,0.3)">
+              <i class="fa-solid fa-ruler" style="color:var(--accent-blue)"></i>
+              <span style="color:var(--text-primary)">StandardScaler</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(159,122,234,0.08);border-color:rgba(159,122,234,0.3)">
+              <i class="fa-solid fa-filter" style="color:var(--accent-purple)"></i>
+              <span style="color:var(--text-primary)">MI SelectKBest (k=20)</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(104,211,145,0.08);border-color:rgba(104,211,145,0.3)">
+              <i class="fa-solid fa-brain" style="color:var(--accent-green)"></i>
+              <span style="color:var(--text-primary)">Logistic Regression</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+            Mutual Information selects the top-k features most informative about the target class.
+            Preserves interpretability — selected features have direct physical meaning.
+            Best for datasets where feature relevance varies significantly.
+          </div>
+        </div>
+
+        <!-- Pipeline B -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-purple)"><i class="fa-solid fa-b"></i> Pipeline B — PCA Compression</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Applied to: UCI Seizure, EEG Eye State</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            <div class="pipeline-step" style="justify-content:center">
+              <i class="fa-solid fa-database"></i> Raw Features
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(99,179,237,0.08);border-color:rgba(99,179,237,0.3)">
+              <i class="fa-solid fa-ruler" style="color:var(--accent-blue)"></i>
+              <span style="color:var(--text-primary)">StandardScaler</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(159,122,234,0.08);border-color:rgba(159,122,234,0.3)">
+              <i class="fa-solid fa-compress" style="color:var(--accent-purple)"></i>
+              <span style="color:var(--text-primary)">PCA (95% variance)</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(104,211,145,0.08);border-color:rgba(104,211,145,0.3)">
+              <i class="fa-solid fa-brain" style="color:var(--accent-green)"></i>
+              <span style="color:var(--text-primary)">Logistic Regression</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+            PCA retains components explaining 95% of variance. Reduces dimensionality while
+            capturing global structure. Loses interpretability but may reduce noise.
+            Components are linear combinations of all original features.
+          </div>
+        </div>
+
+        <!-- Pipeline C -->
+        <div class="card">
+          <div class="card-title" style="color:var(--accent-cyan)"><i class="fa-solid fa-c"></i> Pipeline C — Wavelet + PCA</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Applied to: Bonn EEG only</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            <div class="pipeline-step" style="justify-content:center">
+              <i class="fa-solid fa-database"></i> Raw EEG Signal
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(79,209,197,0.08);border-color:rgba(79,209,197,0.3)">
+              <i class="fa-solid fa-wave-square" style="color:var(--accent-cyan)"></i>
+              <span style="color:var(--text-primary)">Wavelet Denoiser (db4)</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(99,179,237,0.08);border-color:rgba(99,179,237,0.3)">
+              <i class="fa-solid fa-ruler" style="color:var(--accent-blue)"></i>
+              <span style="color:var(--text-primary)">StandardScaler</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(159,122,234,0.08);border-color:rgba(159,122,234,0.3)">
+              <i class="fa-solid fa-compress" style="color:var(--accent-purple)"></i>
+              <span style="color:var(--text-primary)">PCA (95% variance)</span>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:11px">↓</div>
+            <div class="pipeline-step" style="justify-content:center;background:rgba(104,211,145,0.08);border-color:rgba(104,211,145,0.3)">
+              <i class="fa-solid fa-brain" style="color:var(--accent-green)"></i>
+              <span style="color:var(--text-primary)">Logistic Regression</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+            Daubechies-4 wavelet denoising removes high-frequency noise before feature extraction.
+            Designed for Bonn EEG's raw 4097-point signals. Surprisingly underperforms Pipeline A/B
+            on this dataset (PR-AUC 0.765 vs 0.882).
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimensionality Reduction Table -->
+      <div class="card mb-32">
+        <div class="card-title"><i class="fa-solid fa-compress-arrows-alt"></i> Dimensionality Reduction: Input → Output Features</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Input Features</th>
+                <th>Pipeline A Output</th>
+                <th>Pipeline B Output</th>
+                <th>Pipeline C Output</th>
+                <th>Reduction (A)</th>
+                <th>Reduction (B)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--accent-red);font-weight:600">UCI Seizure</td>
+                <td>178</td>
+                <td class="td-highlight">20 (MI top-20)</td>
+                <td class="td-highlight">~30 (PCA 95%)</td>
+                <td class="td-warn">N/A</td>
+                <td>88.8% reduction</td>
+                <td>~83% reduction</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-green);font-weight:600">Bonn EEG</td>
+                <td>6 (engineered)</td>
+                <td class="td-highlight">6 (all selected)</td>
+                <td class="td-highlight">~5 (PCA 95%)</td>
+                <td class="td-highlight">~5 (Wavelet+PCA)</td>
+                <td>0% reduction</td>
+                <td>~17% reduction</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-blue);font-weight:600">EEG Eye State</td>
+                <td>14</td>
+                <td class="td-highlight">14 (all selected)</td>
+                <td class="td-highlight">~10 (PCA 95%)</td>
+                <td class="td-warn">N/A</td>
+                <td>0% reduction</td>
+                <td>~29% reduction</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Baseline Pipeline Results Table -->
+      <div class="card mb-32">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Baseline Pipeline Results (Table 1) — PR-AUC Comparison</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pipeline</th>
+                <th>Dataset</th>
+                <th>PR-AUC</th>
+                <th>F1</th>
+                <th>Recall</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-highlight">Pipeline A</td>
+                <td style="color:var(--accent-red)">UCI Seizure</td>
+                <td>0.464</td>
+                <td>0.046</td>
+                <td>0.023</td>
+                <td>MI selection, 20 features</td>
+              </tr>
+              <tr>
+                <td>Pipeline B</td>
+                <td style="color:var(--accent-red)">UCI Seizure</td>
+                <td>0.480</td>
+                <td>0.105</td>
+                <td>0.055</td>
+                <td>PCA compression</td>
+              </tr>
+              <tr>
+                <td class="td-best">Pipeline A</td>
+                <td style="color:var(--accent-green)">Bonn EEG</td>
+                <td class="td-best">0.882</td>
+                <td class="td-best">0.755</td>
+                <td class="td-best">0.688</td>
+                <td>Best overall configuration</td>
+              </tr>
+              <tr>
+                <td>Pipeline B</td>
+                <td style="color:var(--accent-green)">Bonn EEG</td>
+                <td>0.881</td>
+                <td>0.738</td>
+                <td>0.663</td>
+                <td>Near-identical to Pipeline A</td>
+              </tr>
+              <tr>
+                <td class="td-warn">Pipeline C</td>
+                <td style="color:var(--accent-green)">Bonn EEG</td>
+                <td class="td-warn">0.765</td>
+                <td class="td-warn">0.632</td>
+                <td class="td-warn">0.563</td>
+                <td>Wavelet denoising underperforms</td>
+              </tr>
+              <tr>
+                <td class="td-highlight">Pipeline A</td>
+                <td style="color:var(--accent-blue)">EEG Eye State</td>
+                <td class="td-highlight">0.618</td>
+                <td class="td-highlight">0.546</td>
+                <td class="td-highlight">0.488</td>
+                <td>MI selection dominant</td>
+              </tr>
+              <tr>
+                <td class="td-bad">Pipeline B</td>
+                <td style="color:var(--accent-blue)">EEG Eye State</td>
+                <td class="td-bad">0.559</td>
+                <td class="td-bad">0.370</td>
+                <td class="td-bad">0.287</td>
+                <td>PCA loses discriminative info</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Train/Val Gap Figure -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-image"></i> Train/Validation Gap — C Parameter Effect</div>
+        <img src="assets/figures/train_val_gap_C.png" alt="Train/Validation Gap vs C" class="img-figure"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+          <div style="text-align:center;color:var(--text-muted);font-size:12px">
+            <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+            Figure: assets/figures/train_val_gap_C.png
+          </div>
+        </div>
+        <div class="figure-caption">Train vs validation PR-AUC gap as a function of regularization strength C. Higher C = less regularization = potential overfitting.</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 4 — REGULARIZATION
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page" id="page-regularization">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-sliders"></i> Regularization Analysis</h2>
+        <p>Comparing L1 (Lasso), L2 (Ridge), and ElasticNet regularization across datasets and C values.</p>
+      </div>
+
+      <!-- Reg Comparison Table -->
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Regularization Comparison — Pipeline A, C=1 (Best Config)</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Regularization</th>
+                <th>Dataset</th>
+                <th>PR-AUC</th>
+                <th>Δ vs L2</th>
+                <th>Sparsity</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-highlight">L1 (Lasso)</td>
+                <td style="color:var(--accent-red)">UCI Seizure</td>
+                <td>0.470</td>
+                <td>+0.001</td>
+                <td class="td-best">5/20 nonzero</td>
+                <td>Sparse solution, 75% features zeroed</td>
+              </tr>
+              <tr>
+                <td>L2 (Ridge)</td>
+                <td style="color:var(--accent-red)">UCI Seizure</td>
+                <td>0.469</td>
+                <td>—</td>
+                <td class="td-warn">20/20 nonzero</td>
+                <td>Dense solution, all features used</td>
+              </tr>
+              <tr>
+                <td>ElasticNet (α=0.5)</td>
+                <td style="color:var(--accent-red)">UCI Seizure</td>
+                <td>0.470</td>
+                <td>+0.001</td>
+                <td>~10/20 nonzero</td>
+                <td>Intermediate sparsity</td>
+              </tr>
+              <tr>
+                <td class="td-best">L1 (Lasso)</td>
+                <td style="color:var(--accent-green)">Bonn EEG</td>
+                <td class="td-best">0.884</td>
+                <td>+0.004</td>
+                <td class="td-warn">0/6 nonzero (C=0.01)</td>
+                <td>Aggressive sparsity at low C</td>
+              </tr>
+              <tr>
+                <td>L2 (Ridge)</td>
+                <td style="color:var(--accent-green)">Bonn EEG</td>
+                <td>0.880</td>
+                <td>—</td>
+                <td class="td-best">6/6 nonzero</td>
+                <td>All features retained</td>
+              </tr>
+              <tr>
+                <td class="td-highlight">L1 (Lasso)</td>
+                <td style="color:var(--accent-blue)">EEG Eye State</td>
+                <td>0.604</td>
+                <td>-0.001</td>
+                <td class="td-best">5/14 nonzero</td>
+                <td>Selects 5 most informative channels</td>
+              </tr>
+              <tr>
+                <td class="td-highlight">L2 (Ridge)</td>
+                <td style="color:var(--accent-blue)">EEG Eye State</td>
+                <td>0.605</td>
+                <td>—</td>
+                <td class="td-warn">14/14 nonzero</td>
+                <td>Marginal advantage over L1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(104,211,145,0.05);border-radius:8px;border:1px solid rgba(104,211,145,0.15)">
+          <div style="font-size:11px;color:var(--text-secondary)">
+            <strong style="color:var(--accent-green)">H2 Finding:</strong> No statistically significant difference between L1, L2, and ElasticNet
+            (all p &gt; 0.69). Regularization type has minimal impact on PR-AUC when C is optimized.
+            The choice of C (regularization strength) matters far more than the penalty type.
+          </div>
+        </div>
+      </div>
+
+      <!-- Sparsity Chart -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Sparsity: Nonzero Coefficients (C=0.01)</div>
+          <div class="chart-container" style="height:260px">
+            <canvas id="sparsityChart"></canvas>
+          </div>
+          <div style="margin-top:12px;font-size:11px;color:var(--text-secondary)">
+            At C=0.01 (strong regularization), L1 aggressively zeros out coefficients while L2 retains all.
+            Bonn EEG with L1 reaches complete sparsity (0/6 features), effectively predicting the majority class.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-line"></i> PR-AUC vs C Value (Pipeline A, L1 vs L2)</div>
+          <div class="chart-container" style="height:260px">
+            <canvas id="cValueChart"></canvas>
+          </div>
+          <div style="margin-top:12px;font-size:11px;color:var(--text-secondary)">
+            Performance peaks around C=1 for most datasets. Very low C (strong regularization) hurts recall;
+            very high C risks overfitting. The optimal range is C ∈ [0.1, 10].
+          </div>
+        </div>
+      </div>
+
+      <!-- Figures -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Regularization Curve — UCI Seizure</div>
+          <img src="assets/figures/reg_curve_uci.png" alt="Regularization Curve UCI" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/reg_curve_uci.png
+            </div>
+          </div>
+          <div class="figure-caption">PR-AUC vs C for L1, L2, ElasticNet on UCI Seizure dataset.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> ElasticNet L1-Ratio Sweep</div>
+          <img src="assets/figures/elasticnet_l1ratio_sweep.png" alt="ElasticNet L1 Ratio Sweep" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/elasticnet_l1ratio_sweep.png
+            </div>
+          </div>
+          <div class="figure-caption">ElasticNet performance across L1 ratio values (0→1). No clear optimum found.</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Coefficient Stability — L1</div>
+          <img src="assets/figures/coef_stability_l1.png" alt="Coefficient Stability L1" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/coef_stability_l1.png
+            </div>
+          </div>
+          <div class="figure-caption">L1 coefficient stability across cross-validation folds. High variance indicates instability.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Coefficient Stability — L2</div>
+          <img src="assets/figures/coef_stability_l2.png" alt="Coefficient Stability L2" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/coef_stability_l2.png
+            </div>
+          </div>
+          <div class="figure-caption">L2 coefficient stability — typically more stable than L1 due to smooth penalty.</div>
+        </div>
+      </div>
+
+      <!-- Interactive C-value Table -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-sliders"></i> C-Value Sensitivity — Pipeline A, Bonn EEG</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>C Value</th>
+                <th>Regularization Strength</th>
+                <th>L1 PR-AUC</th>
+                <th>L2 PR-AUC</th>
+                <th>L1 Nonzero Coefs</th>
+                <th>L2 Nonzero Coefs</th>
+                <th>Interpretation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0.001</td>
+                <td class="td-bad">Very Strong</td>
+                <td class="td-bad">~0.25</td>
+                <td class="td-warn">~0.60</td>
+                <td class="td-bad">0/6</td>
+                <td>6/6</td>
+                <td>L1 fully sparse, underfitting</td>
+              </tr>
+              <tr>
+                <td>0.01</td>
+                <td class="td-warn">Strong</td>
+                <td class="td-warn">~0.70</td>
+                <td class="td-warn">~0.82</td>
+                <td class="td-bad">0/6</td>
+                <td>6/6</td>
+                <td>L1 still sparse</td>
+              </tr>
+              <tr>
+                <td>0.1</td>
+                <td>Moderate</td>
+                <td>~0.86</td>
+                <td>~0.87</td>
+                <td>3/6</td>
+                <td>6/6</td>
+                <td>L1 begins selecting features</td>
+              </tr>
+              <tr>
+                <td class="td-best">1</td>
+                <td class="td-best">Balanced</td>
+                <td class="td-best">0.884</td>
+                <td class="td-best">0.880</td>
+                <td class="td-best">6/6</td>
+                <td class="td-best">6/6</td>
+                <td class="td-best">Optimal — best PR-AUC</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Weak</td>
+                <td>~0.880</td>
+                <td>~0.878</td>
+                <td>6/6</td>
+                <td>6/6</td>
+                <td>Slight overfitting begins</td>
+              </tr>
+              <tr>
+                <td>100</td>
+                <td class="td-warn">Very Weak</td>
+                <td class="td-warn">~0.870</td>
+                <td class="td-warn">~0.872</td>
+                <td>6/6</td>
+                <td>6/6</td>
+                <td>Overfitting on small dataset</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 5 — IMBALANCE
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page" id="page-imbalance">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-scale-balanced"></i> Class Imbalance Handling</h2>
+        <p>Comparing SMOTE oversampling, random undersampling, and class weight balancing on UCI Seizure (1:4 imbalance).</p>
+      </div>
+
+      <!-- Imbalance Method Comparison Table -->
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Imbalance Method Comparison — UCI Seizure, Pipeline A</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Regularization</th>
+                <th>PR-AUC</th>
+                <th>Δ vs Baseline (0.464)</th>
+                <th>Strategy</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--accent-purple);font-weight:600">SMOTE</td>
+                <td>L1</td>
+                <td>0.454</td>
+                <td class="td-bad">-0.010</td>
+                <td>Oversample minority</td>
+                <td>Synthetic samples may add noise</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-purple);font-weight:600">SMOTE</td>
+                <td>L2</td>
+                <td>0.454</td>
+                <td class="td-bad">-0.010</td>
+                <td>Oversample minority</td>
+                <td>Identical to L1 — regularization irrelevant</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-purple);font-weight:600">SMOTE</td>
+                <td>ElasticNet</td>
+                <td>0.454</td>
+                <td class="td-bad">-0.010</td>
+                <td>Oversample minority</td>
+                <td>All three reg types converge</td>
+              </tr>
+              <tr>
+                <td class="td-best">Undersample</td>
+                <td>L1</td>
+                <td class="td-best">0.466</td>
+                <td class="td-best">+0.002</td>
+                <td>Reduce majority</td>
+                <td>Best overall method</td>
+              </tr>
+              <tr>
+                <td class="td-highlight">Undersample</td>
+                <td>L2</td>
+                <td class="td-highlight">0.461</td>
+                <td class="td-highlight">-0.003</td>
+                <td>Reduce majority</td>
+                <td>Slight drop vs L1</td>
+              </tr>
+              <tr>
+                <td class="td-highlight">Undersample</td>
+                <td>ElasticNet</td>
+                <td class="td-highlight">0.463</td>
+                <td class="td-highlight">-0.001</td>
+                <td>Reduce majority</td>
+                <td>Between L1 and L2</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-orange);font-weight:600">ClassWeight</td>
+                <td>L1</td>
+                <td>0.460</td>
+                <td>-0.004</td>
+                <td>Penalize misclassification</td>
+                <td>No data modification needed</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-orange);font-weight:600">ClassWeight</td>
+                <td>L2</td>
+                <td>0.459</td>
+                <td>-0.005</td>
+                <td>Penalize misclassification</td>
+                <td>Slightly below ClassWeight+L1</td>
+              </tr>
+              <tr>
+                <td style="color:var(--accent-orange);font-weight:600">ClassWeight</td>
+                <td>ElasticNet</td>
+                <td>0.459</td>
+                <td>-0.005</td>
+                <td>Penalize misclassification</td>
+                <td>Same as L2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(246,173,85,0.05);border-radius:8px;border:1px solid rgba(246,173,85,0.15)">
+          <div style="font-size:11px;color:var(--text-secondary)">
+            <strong style="color:var(--accent-orange)">H4 Finding:</strong> No statistically significant interaction between imbalance handling method
+            and regularization type (all p &gt; 0.2). The differences in PR-AUC are practically negligible (&lt;0.012).
+            Undersampling marginally outperforms SMOTE and class weighting on this dataset.
+          </div>
+        </div>
+      </div>
+
+      <!-- Imbalance Charts -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> PR-AUC by Imbalance Method &amp; Regularization</div>
+          <div class="chart-container" style="height:280px">
+            <canvas id="imbalanceChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-pie"></i> Class Imbalance Ratio Visualization</div>
+          <div class="chart-container" style="height:280px">
+            <canvas id="imbalanceRatioChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- PR Curve Figures -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> PR Curves — Imbalance Methods (UCI Seizure)</div>
+          <img src="assets/figures/pr_curves_imbalance_uci_seizure.png" alt="PR Curves UCI Seizure" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:140px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/pr_curves_imbalance_uci_seizure.png
+            </div>
+          </div>
+          <div class="figure-caption">Precision-Recall curves for SMOTE, Undersample, and ClassWeight on UCI Seizure.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> PR Curves — Imbalance Methods (EEG Eye State)</div>
+          <img src="assets/figures/pr_curves_imbalance_eeg_eye_state.png" alt="PR Curves EEG Eye State" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:140px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              assets/figures/pr_curves_imbalance_eeg_eye_state.png
+            </div>
+          </div>
+          <div class="figure-caption">Precision-Recall curves for imbalance methods on EEG Eye State dataset.</div>
+        </div>
+      </div>
+
+      <!-- Imbalance Strategy Explainer -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-info-circle"></i> Imbalance Strategy Comparison</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <div style="padding:16px;background:rgba(159,122,234,0.06);border-radius:10px;border:1px solid rgba(159,122,234,0.2)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-purple);margin-bottom:8px">
+              <i class="fa-solid fa-plus-circle"></i> SMOTE
+            </div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+              Synthetic Minority Oversampling Technique. Creates synthetic samples by interpolating between
+              existing minority class examples. Risk: synthetic samples may not reflect true data distribution,
+              especially in high-dimensional EEG space.
+            </div>
+            <div style="margin-top:8px;font-size:11px;color:var(--accent-purple)">Best PR-AUC: 0.454</div>
+          </div>
+          <div style="padding:16px;background:rgba(104,211,145,0.06);border-radius:10px;border:1px solid rgba(104,211,145,0.2)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-green);margin-bottom:8px">
+              <i class="fa-solid fa-minus-circle"></i> Undersampling
+            </div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+              Randomly removes majority class samples to match minority class size. Loses information
+              but avoids synthetic data artifacts. Works well when majority class has redundant samples.
+              Best performer in this study.
+            </div>
+            <div style="margin-top:8px;font-size:11px;color:var(--accent-green)">Best PR-AUC: 0.466</div>
+          </div>
+          <div style="padding:16px;background:rgba(246,173,85,0.06);border-radius:10px;border:1px solid rgba(246,173,85,0.2)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-orange);margin-bottom:8px">
+              <i class="fa-solid fa-weight-scale"></i> Class Weights
+            </div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">
+              Adjusts loss function to penalize minority class misclassification more heavily.
+              No data modification required. Computationally efficient. Equivalent to resampling
+              in expectation for logistic regression.
+            </div>
+            <div style="margin-top:8px;font-size:11px;color:var(--accent-orange)">Best PR-AUC: 0.460</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE 6 — OVERFITTING
+    ═══════════════════════════════════════════════════════ -->
+    <section class="page" id="page-overfitting">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-chart-line"></i> Overfitting &amp; Bias-Variance Analysis</h2>
+        <p>Investigating the bias-variance tradeoff, learning curves, and the effect of polynomial feature expansion.</p>
+      </div>
+
+      <!-- H5 Highlight -->
+      <div style="background:linear-gradient(135deg,rgba(252,129,129,0.08),rgba(246,173,85,0.08));border:1px solid rgba(252,129,129,0.3);border-radius:var(--radius-lg);padding:24px;margin-bottom:28px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:40px;height:40px;background:rgba(252,129,129,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--accent-red);font-size:18px">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text-primary)">H5: Polynomial Feature Expansion Causes Significant Overfitting</div>
+            <div style="font-size:11px;color:var(--text-muted)">Hypothesis 5 — Highly Significant Result</div>
+          </div>
+          <div style="margin-left:auto;padding:6px 16px;background:rgba(252,129,129,0.15);border:1px solid rgba(252,129,129,0.3);border-radius:20px;font-size:12px;font-weight:700;color:var(--accent-red)">
+            p = 0.0000031
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">
+          Mann-Whitney U test comparing baseline logistic regression vs polynomial (degree=2) feature expansion
+          yields p = 3.1 × 10⁻⁶, far below the α = 0.05 threshold. Polynomial features dramatically increase
+          model complexity, causing the train-validation gap to widen significantly. This confirms that for
+          EEG classification with logistic regression, polynomial expansion introduces more variance than it
+          reduces bias — a clear overfitting regime.
+        </div>
+        <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap">
+          <div style="font-size:11px;color:var(--text-muted)">Train PR-AUC (Poly): <span style="color:var(--accent-green);font-weight:700">~0.95+</span></div>
+          <div style="font-size:11px;color:var(--text-muted)">Val PR-AUC (Poly): <span style="color:var(--accent-red);font-weight:700">significantly lower</span></div>
+          <div style="font-size:11px;color:var(--text-muted)">Train-Val Gap: <span style="color:var(--accent-red);font-weight:700">large (overfitting)</span></div>
+        </div>
+      </div>
+
+      <!-- Bias-Variance Diagram -->
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-diagram-project"></i> Bias-Variance Tradeoff Diagram</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px">
+          <div style="padding:16px;background:rgba(99,179,237,0.06);border-radius:10px;border:1px solid rgba(99,179,237,0.2);text-align:center">
+            <div style="font-size:24px;margin-bottom:8px">📉</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">High Bias (Underfitting)</div>
+            <div style="font-size:11px;color:var(--text-secondary)">C very small (e.g., 0.001)<br>L1 on Bonn EEG → 0/6 features<br>Model too simple, misses patterns</div>
+            <div style="margin-top:8px;font-size:10px;color:var(--text-muted)">Train ≈ Val ≈ Low</div>
+          </div>
+          <div style="padding:16px;background:rgba(104,211,145,0.06);border-radius:10px;border:1px solid rgba(104,211,145,0.2);text-align:center">
+            <div style="font-size:24px;margin-bottom:8px">✅</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent-green);margin-bottom:6px">Optimal (C=1)</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Balanced regularization<br>Best PR-AUC on all datasets<br>Small train-val gap</div>
+            <div style="margin-top:8px;font-size:10px;color:var(--text-muted)">Train ≈ Val ≈ High</div>
+          </div>
+          <div style="padding:16px;background:rgba(252,129,129,0.06);border-radius:10px;border:1px solid rgba(252,129,129,0.2);text-align:center">
+            <div style="font-size:24px;margin-bottom:8px">📈</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent-red);margin-bottom:6px">High Variance (Overfitting)</div>
+            <div style="font-size:11px;color:var(--text-secondary)">Polynomial features (degree=2)<br>C very large (e.g., 100)<br>Model memorizes training data</div>
+            <div style="margin-top:8px;font-size:10px;color:var(--text-muted)">Train High, Val Low</div>
+          </div>
+        </div>
+        <div class="equation-block">
+          <div class="equation">
+            <span class="eq-term">E[L]</span>
+            <span class="eq-op">=</span>
+            <span class="eq-term">(f̄(x) − f(x))²</span>
+            <span class="eq-op">+</span>
+            <span class="eq-term">E[(f(x) − f̄(x))²]</span>
+            <span class="eq-op">+</span>
+            <span class="eq-term">σ²</span>
+          </div>
+          <div class="equation-caption">Bias² + Variance + Irreducible Noise — the fundamental decomposition of expected loss.</div>
+        </div>
+      </div>
+
+      <!-- Learning Curve Figures -->
+      <div class="section-header">
+        <h2><i class="fa-solid fa-image"></i> Learning Curves</h2>
+        <p>Training and validation performance as a function of training set size.</p>
+      </div>
+      <div class="grid-3 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Baseline Learning Curve</div>
+          <img src="assets/figures/learning_curve_baseline.png" alt="Learning Curve Baseline" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              learning_curve_baseline.png
+            </div>
+          </div>
+          <div class="figure-caption">Baseline model: train and val curves converge — appropriate bias-variance balance.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Underfit Learning Curve</div>
+          <img src="assets/figures/learning_curve_underfit.png" alt="Learning Curve Underfit" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              learning_curve_underfit.png
+            </div>
+          </div>
+          <div class="figure-caption">Underfit model (strong regularization): both curves plateau at low performance.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-image"></i> Overfit Learning Curve</div>
+          <img src="assets/figures/learning_curve_overfit.png" alt="Learning Curve Overfit" class="img-figure"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div style="display:none;height:120px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+            <div style="text-align:center;color:var(--text-muted);font-size:12px">
+              <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+              learning_curve_overfit.png
+            </div>
+          </div>
+          <div class="figure-caption">Overfit model (polynomial features): large train-val gap, high variance.</div>
+        </div>
+      </div>
+
+      <!-- Train/Val Gap Figure -->
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-image"></i> Train/Validation Gap vs C Parameter</div>
+        <img src="assets/figures/train_val_gap_C.png" alt="Train Val Gap C" class="img-figure"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div style="display:none;height:140px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed var(--border)">
+          <div style="text-align:center;color:var(--text-muted);font-size:12px">
+            <i class="fa-solid fa-image" style="font-size:24px;margin-bottom:8px;display:block"></i>
+            assets/figures/train_val_gap_C.png
+          </div>
+        </div>
+        <div class="figure-caption">As C increases (weaker regularization), the train-validation gap widens, indicating increasing variance.</div>
+      </div>
+
+      <!-- Expandable Details -->
+      <div class="expandable open">
+        <div class="expandable-header" onclick="toggleExpand(this)">
+          <span><i class="fa-solid fa-info-circle" style="color:var(--accent-blue);margin-right:8px"></i>Why Polynomial Features Overfit on EEG Data</span>
+          <i class="fa-solid fa-chevron-down toggle"></i>
+        </div>
+        <div class="expandable-body">
+          <p>Polynomial feature expansion (degree=2) on 178 UCI Seizure features creates approximately
+          <strong style="color:var(--accent-orange)">15,931 interaction terms</strong> (178 + 178×177/2 = 15,931 + 178 = 16,109 features).
+          With only 11,500 training samples, this creates a severely underdetermined system where the model
+          can memorize training examples rather than learning generalizable patterns.</p>
+          <br>
+          <p>For Bonn EEG (6 features), degree-2 expansion yields only 21 features — still manageable,
+          but the 500-sample dataset makes overfitting likely without strong regularization.</p>
+          <br>
+          <p>The statistical test (H5) confirms this: Mann-Whitney U test on cross-validation PR-AUC scores
+          between baseline and polynomial models yields p = 3.1 × 10⁻⁶, indicating the performance
+          degradation is not due to chance.</p>
+        </div>
+      </div>
+    </section>
+    <!-- PAGE 7 - RESULTS -->
+    <section class="page" id="page-results">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-table"></i> Experiment Results</h2>
+        <p>All result tables and statistical tests. Loaded from results/tables/.</p>
+      </div>
+      <div class="card mb-24" style="border-color:rgba(104,211,145,0.3)">
+        <div class="card-title" style="color:var(--accent-green)"><i class="fa-solid fa-trophy"></i> Final Holdout Evaluation — Pipeline A + L2, C=1</div>
+        <div class="table-wrap"><table id="holdoutTable">
+          <thead><tr><th>Dataset</th><th>PR-AUC</th><th>F1</th><th>Recall</th><th>Precision</th><th>Accuracy</th><th>Assessment</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent-green);font-weight:600">Bonn EEG</td><td class="td-best">0.811</td><td class="td-best">0.618</td><td class="td-highlight">0.525</td><td class="td-highlight">0.750</td><td>0.740</td><td class="td-best">Best overall</td></tr>
+            <tr><td style="color:var(--accent-blue);font-weight:600">EEG Eye State</td><td class="td-highlight">0.593</td><td class="td-highlight">0.442</td><td>0.367</td><td>0.558</td><td>0.585</td><td>Moderate</td></tr>
+            <tr><td style="color:var(--accent-red);font-weight:600">UCI Seizure</td><td class="td-warn">0.452</td><td class="td-bad">0.043</td><td class="td-bad">0.022</td><td class="td-best">1.000</td><td>0.804</td><td class="td-warn">Low recall</td></tr>
+          </tbody>
+        </table></div>
+        <button class="export-btn" onclick="exportTable('holdoutTable','holdout_evaluation')"><i class="fa-solid fa-download"></i> Export CSV</button>
+      </div>
+      <div class="section-header"><h2><i class="fa-solid fa-vial"></i> Hypothesis Tests H1–H5</h2></div>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-vial"></i> H1 — Pipeline Effect</div>
+          <div class="table-wrap"><table><thead><tr><th>Comparison</th><th>Dataset</th><th>p-value</th><th>Significant?</th></tr></thead>
+          <tbody>
+            <tr><td>Pipeline A vs B</td><td style="color:var(--accent-red)">UCI Seizure</td><td>0.166</td><td class="td-warn">No</td></tr>
+            <tr><td>Pipeline A vs B</td><td style="color:var(--accent-blue)">Eye State</td><td class="td-best">0.000082</td><td class="td-best">YES ✓</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-vial"></i> H5 — Polynomial Overfitting</div>
+          <div class="table-wrap"><table><thead><tr><th>Comparison</th><th>t-stat</th><th>p-value</th><th>Significant?</th></tr></thead>
+          <tbody>
+            <tr><td>Baseline vs Poly</td><td>-45.44</td><td class="td-best">0.0000031</td><td class="td-best">YES ★ Highly Sig.</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-vial"></i> H2 — Regularization Generalization</div>
+          <div class="table-wrap"><table><thead><tr><th>Group A</th><th>Group B</th><th>p-value</th><th>Sig?</th></tr></thead>
+          <tbody>
+            <tr><td>L1</td><td>L2</td><td>0.914</td><td class="td-warn">No</td></tr>
+            <tr><td>L1</td><td>ElasticNet</td><td>0.698</td><td class="td-warn">No</td></tr>
+            <tr><td>L2</td><td>ElasticNet</td><td>0.769</td><td class="td-warn">No</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-vial"></i> H3 — ElasticNet vs L1/L2</div>
+          <div class="table-wrap"><table><thead><tr><th>Group A</th><th>Group B</th><th>p-value</th><th>Sig?</th></tr></thead>
+          <tbody>
+            <tr><td>L1</td><td>L2</td><td>0.380</td><td class="td-warn">No</td></tr>
+            <tr><td>L1</td><td>ElasticNet</td><td>0.544</td><td class="td-warn">No</td></tr>
+            <tr><td>L2</td><td>ElasticNet</td><td>0.314</td><td class="td-warn">No</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Holdout PR-AUC by Dataset</div>
+          <div class="chart-container" style="height:260px"><canvas id="holdoutChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Baseline: Pipeline A vs B</div>
+          <div class="chart-container" style="height:260px"><canvas id="pipelineCompChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Table 1 — Baseline Pipeline Results</div>
+        <div class="table-wrap"><table id="table1">
+          <thead><tr><th>Pipeline</th><th>Dataset</th><th>PR-AUC</th><th>F1</th><th>Recall</th><th>Precision</th><th>Accuracy</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td style="color:var(--accent-red)">UCI Seizure</td><td>0.466</td><td>0.048</td><td>0.024</td><td>0.978</td><td>0.805</td></tr>
+            <tr><td>B</td><td style="color:var(--accent-red)">UCI Seizure</td><td>0.480</td><td>0.105</td><td>0.055</td><td>0.981</td><td>0.811</td></tr>
+            <tr><td class="td-best">A</td><td style="color:var(--accent-green)">Bonn EEG</td><td class="td-best">0.882</td><td class="td-best">0.755</td><td class="td-best">0.688</td><td>0.846</td><td>0.875</td></tr>
+            <tr><td>B</td><td style="color:var(--accent-green)">Bonn EEG</td><td>0.881</td><td>0.738</td><td>0.663</td><td>0.712</td><td>0.875</td></tr>
+            <tr><td class="td-warn">C</td><td style="color:var(--accent-green)">Bonn EEG</td><td class="td-warn">0.765</td><td class="td-warn">0.632</td><td class="td-warn">0.563</td><td>0.714</td><td>0.860</td></tr>
+            <tr><td class="td-highlight">A</td><td style="color:var(--accent-blue)">EEG Eye State</td><td class="td-highlight">0.618</td><td class="td-highlight">0.546</td><td class="td-highlight">0.488</td><td>0.621</td><td>0.636</td></tr>
+            <tr><td class="td-bad">B</td><td style="color:var(--accent-blue)">EEG Eye State</td><td class="td-bad">0.559</td><td class="td-bad">0.370</td><td class="td-bad">0.287</td><td>0.523</td><td>0.562</td></tr>
+          </tbody>
+        </table></div>
+        <button class="export-btn" onclick="exportTable('table1','baseline_results')"><i class="fa-solid fa-download"></i> Export CSV</button>
+      </div>
+    </section>
+    <!-- PAGE 8 - FAILURE ANALYSIS -->
+    <section class="page" id="page-failure">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-triangle-exclamation"></i> Failure Analysis</h2>
+        <p>Where and why models fail. Scientific maturity requires understanding failure modes, not just reporting accuracy.</p>
+      </div>
+      <div class="kpi-grid mb-28">
+        <div class="kpi-card red"><div class="kpi-icon"><i class="fa-solid fa-xmark"></i></div><div class="kpi-value">0.022</div><div class="kpi-label">Worst Recall</div><div class="kpi-sub">UCI Seizure — misses 97.8% of seizures</div></div>
+        <div class="kpi-card orange"><div class="kpi-icon"><i class="fa-solid fa-arrow-down"></i></div><div class="kpi-value">0.765</div><div class="kpi-label">Pipeline C Underperforms</div><div class="kpi-sub">Wavelet denoising hurts Bonn EEG</div></div>
+        <div class="kpi-card purple"><div class="kpi-icon"><i class="fa-solid fa-minus"></i></div><div class="kpi-value">-0.010</div><div class="kpi-label">SMOTE Hurts</div><div class="kpi-sub">SMOTE reduces PR-AUC on UCI Seizure</div></div>
+        <div class="kpi-card blue"><div class="kpi-icon"><i class="fa-solid fa-chart-line"></i></div><div class="kpi-value">3.1e-6</div><div class="kpi-label">Poly Overfit p-value</div><div class="kpi-sub">H5 confirmed — polynomial features fail</div></div>
+      </div>
+      <div class="card mb-24">
+        <div class="card-title"><i class="fa-solid fa-table"></i> Failure Analysis Summary</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Failure Type</th><th>Dataset</th><th>Pipeline</th><th>Metric</th><th>Value</th><th>Root Cause</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bad">Worst Recall</td><td style="color:var(--accent-red)">UCI Seizure</td><td>A</td><td>Recall</td><td class="td-bad">0.022</td><td>Severe 1:4 imbalance — model predicts majority class</td></tr>
+            <tr><td class="td-bad">Highest FN Rate</td><td style="color:var(--accent-red)">UCI Seizure</td><td>All</td><td>FN Rate</td><td class="td-bad">~97.8%</td><td>Clinically dangerous — 97.8% of seizures missed</td></tr>
+            <tr><td class="td-warn">Pipeline Underperforms</td><td style="color:var(--accent-green)">Bonn EEG</td><td class="td-warn">C</td><td>PR-AUC</td><td class="td-warn">0.765</td><td>Wavelet denoising removes discriminative signal components</td></tr>
+            <tr><td class="td-warn">SMOTE Hurts</td><td style="color:var(--accent-red)">UCI Seizure</td><td>A</td><td>PR-AUC</td><td class="td-warn">0.454 (-0.010)</td><td>Synthetic EEG samples add noise in 178-dim space</td></tr>
+            <tr><td class="td-bad">Polynomial Overfit</td><td style="color:var(--accent-red)">UCI Seizure</td><td>Poly</td><td>Val PR-AUC</td><td class="td-bad">Degraded</td><td>16,109 features with 11,500 samples — underdetermined</td></tr>
+            <tr><td class="td-warn">L1 Complete Sparsity</td><td style="color:var(--accent-green)">Bonn EEG</td><td>A</td><td>Nonzero Coefs</td><td class="td-bad">0/6</td><td>All 6 features zeroed at C=0.01 — predicts majority only</td></tr>
+            <tr><td>PCA Loses Info</td><td style="color:var(--accent-blue)">EEG Eye State</td><td class="td-bad">B</td><td>PR-AUC</td><td class="td-warn">0.559 (-0.059)</td><td>PCA discards discriminative channel-specific variance</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Recall Comparison — All Datasets</div>
+          <div class="chart-container" style="height:280px"><canvas id="recallChart"></canvas></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--text-secondary)">UCI Seizure recall is catastrophically low. This is the primary clinical failure mode.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> PR-AUC: Baseline vs Imbalance Methods</div>
+          <div class="chart-container" style="height:280px"><canvas id="imbalanceDropChart"></canvas></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--text-secondary)">SMOTE consistently reduces PR-AUC on UCI Seizure. Undersampling marginally improves it.</div>
+        </div>
+      </div>
+      <div class="card mb-24" style="border-color:rgba(252,129,129,0.3)">
+        <div class="card-title" style="color:var(--accent-red)"><i class="fa-solid fa-heart-pulse"></i> Clinical Implications</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+          <div style="padding:16px;background:rgba(252,129,129,0.06);border-radius:10px;border:1px solid rgba(252,129,129,0.15)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-red);margin-bottom:8px"><i class="fa-solid fa-xmark-circle"></i> False Negatives (Missed Seizures)</div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">With recall = 0.022, the model misses 97.8% of actual seizures. In a clinical setting this is unacceptable — missed seizures can lead to injury or death. This model should NOT be deployed clinically without significant improvement in recall.</div>
+          </div>
+          <div style="padding:16px;background:rgba(246,173,85,0.06);border-radius:10px;border:1px solid rgba(246,173,85,0.15)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-orange);margin-bottom:8px"><i class="fa-solid fa-check-circle"></i> False Positives (False Alarms)</div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">Precision = 1.000 on UCI Seizure holdout means when the model does predict a seizure, it is always correct. However this comes at the cost of near-zero recall. The model is extremely conservative — it almost never predicts the positive class.</div>
+          </div>
+          <div style="padding:16px;background:rgba(99,179,237,0.06);border-radius:10px;border:1px solid rgba(99,179,237,0.15)">
+            <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:8px"><i class="fa-solid fa-lightbulb"></i> Why Logistic Regression Struggles</div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">Logistic regression is a linear classifier. EEG seizure patterns may not be linearly separable in 178-dimensional space. The 1:4 imbalance further biases the decision boundary toward the majority class. Non-linear models (SVM, Random Forest, LSTM) would likely perform significantly better.</div>
+          </div>
+        </div>
+      </div>
+      <div class="expandable open">
+        <div class="expandable-header" onclick="toggleExpand(this)">
+          <span><i class="fa-solid fa-microscope" style="color:var(--accent-purple);margin-right:8px"></i>Deep Dive: Why Each Dataset Has Different Failure Modes</span>
+          <i class="fa-solid fa-chevron-down toggle"></i>
+        </div>
+        <div class="expandable-body">
+          <p><strong style="color:var(--accent-red)">UCI Seizure:</strong> The fundamental problem is that 178 raw EEG amplitude values are not the right feature representation for seizure detection. Seizures are characterized by specific frequency patterns (delta, theta, alpha, beta, gamma bands) not captured by raw time-domain amplitudes. Frequency-domain features (FFT, wavelet coefficients) would be more appropriate. Additionally, the 1:4 imbalance means a naive classifier achieves 80% accuracy by always predicting non-seizure.</p>
+          <br>
+          <p><strong style="color:var(--accent-green)">Bonn EEG:</strong> The 6 engineered features are surprisingly effective. The failure of Pipeline C (wavelet denoising) suggests the denoising step removes signal components that are actually discriminative for ictal vs non-ictal classification. This is a case where domain knowledge ("denoise the signal") conflicts with empirical results.</p>
+          <br>
+          <p><strong style="color:var(--accent-blue)">EEG Eye State:</strong> The strong performance of Pipeline A over Pipeline B (H1: p=0.000082) suggests specific EEG channels carry more discriminative information than others. PCA mixes all channels together, losing this channel-specific information. MI feature selection correctly identifies the most informative channels.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+// ── Navigation ──────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+  const nav = document.querySelector('[data-page="' + name + '"]');
+  if (nav) nav.classList.add('active');
+  const titles = {
+    overview:'Overview', datasets:'Datasets', preprocessing:'Preprocessing',
+    regularization:'Regularization', imbalance:'Class Imbalance',
+    overfitting:'Overfitting & Bias-Variance', results:'Results',
+    failure:'Failure Analysis'
+  };
+  document.getElementById('topbar-title').textContent = titles[name] || name;
+  window.scrollTo(0,0);
+}
+
+// ── Expandable sections ──────────────────────────────────────────────────────
+function toggleExpand(header) {
+  const exp = header.closest('.expandable');
+  exp.classList.toggle('open');
+}
+
+// ── Export table to CSV ──────────────────────────────────────────────────────
+function exportTable(tableId, filename) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  let csv = [];
+  table.querySelectorAll('tr').forEach(row => {
+    const cells = Array.from(row.querySelectorAll('th,td')).map(c => '"' + c.innerText.replace(/"/g,'""') + '"');
+    csv.push(cells.join(','));
+  });
+  const blob = new Blob([csv.join('\n')], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename + '.csv';
+  a.click();
+}
+
+// ── Chart defaults ───────────────────────────────────────────────────────────
+Chart.defaults.color = '#a0aec0';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.font.size = 11;
+
+const COLORS = {
+  blue:   'rgba(99,179,237,0.85)',
+  green:  'rgba(104,211,145,0.85)',
+  red:    'rgba(252,129,129,0.85)',
+  purple: 'rgba(159,122,234,0.85)',
+  cyan:   'rgba(79,209,197,0.85)',
+  orange: 'rgba(246,173,85,0.85)',
+};
+
+// ── Datasets page charts ─────────────────────────────────────────────────────
+new Chart(document.getElementById('classDistChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UCI Seizure','Bonn EEG','EEG Eye State'],
+    datasets: [
+      {label:'Positive (minority)', data:[2300,100,6741], backgroundColor:[COLORS.red,COLORS.green,COLORS.cyan]},
+      {label:'Negative (majority)', data:[9200,400,8239], backgroundColor:['rgba(99,179,237,0.4)','rgba(99,179,237,0.4)','rgba(99,179,237,0.4)']}
+    ]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top'}},
+    scales:{x:{stacked:false},y:{beginAtZero:true}}}
+});
+
+new Chart(document.getElementById('featureCountChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UCI Seizure\n(raw)','UCI Seizure\n(Pipeline A)','Bonn EEG\n(engineered)','EEG Eye State\n(raw)'],
+    datasets: [{label:'Feature Count', data:[178,20,6,14],
+      backgroundColor:[COLORS.red,COLORS.orange,COLORS.green,COLORS.blue]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true}}}
+});
+
+// ── Regularization page charts ───────────────────────────────────────────────
+new Chart(document.getElementById('sparsityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UCI (L1)','UCI (L2)','Bonn (L1)','Bonn (L2)','Eye State (L1)','Eye State (L2)'],
+    datasets: [{label:'Nonzero Coefficients at C=0.01',
+      data:[5,20,0,6,5,14],
+      backgroundColor:[COLORS.red,COLORS.blue,COLORS.red,COLORS.blue,COLORS.red,COLORS.blue]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true, max:25}}}
+});
+
+new Chart(document.getElementById('cValueChart'), {
+  type: 'line',
+  data: {
+    labels: ['0.001','0.01','0.1','1','10','100'],
+    datasets: [
+      {label:'UCI L1', data:[0.35,0.42,0.46,0.470,0.468,0.460], borderColor:COLORS.red, tension:0.3, fill:false},
+      {label:'UCI L2', data:[0.40,0.44,0.46,0.469,0.467,0.462], borderColor:COLORS.blue, tension:0.3, fill:false},
+      {label:'Bonn L1', data:[0.25,0.70,0.86,0.884,0.880,0.870], borderColor:COLORS.green, tension:0.3, fill:false},
+      {label:'Bonn L2', data:[0.60,0.82,0.87,0.880,0.878,0.872], borderColor:COLORS.cyan, tension:0.3, fill:false}
+    ]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top'}},
+    scales:{y:{beginAtZero:false, min:0.2}}}
+});
+
+// ── Imbalance page charts ────────────────────────────────────────────────────
+new Chart(document.getElementById('imbalanceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['SMOTE+L1','SMOTE+L2','SMOTE+EN','Under+L1','Under+L2','Under+EN','CW+L1','CW+L2','CW+EN'],
+    datasets: [{label:'PR-AUC (UCI Seizure)',
+      data:[0.454,0.454,0.454,0.466,0.461,0.463,0.460,0.459,0.459],
+      backgroundColor:[COLORS.purple,COLORS.purple,COLORS.purple,COLORS.green,COLORS.green,COLORS.green,COLORS.orange,COLORS.orange,COLORS.orange]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{min:0.44, max:0.48}}}
+});
+
+new Chart(document.getElementById('imbalanceRatioChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Seizure (pos)','Non-seizure (neg)'],
+    datasets: [{data:[2300,9200], backgroundColor:[COLORS.red,'rgba(99,179,237,0.4)'], borderWidth:0}]
+  },
+  options: {responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'}, title:{display:true, text:'UCI Seizure Class Distribution'}}}
+});
+
+// ── Results page charts ──────────────────────────────────────────────────────
+new Chart(document.getElementById('holdoutChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Bonn EEG','EEG Eye State','UCI Seizure'],
+    datasets: [
+      {label:'PR-AUC', data:[0.811,0.593,0.452], backgroundColor:[COLORS.green,COLORS.blue,COLORS.red]},
+      {label:'F1', data:[0.618,0.442,0.043], backgroundColor:['rgba(104,211,145,0.4)','rgba(99,179,237,0.4)','rgba(252,129,129,0.4)']}
+    ]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'top'}},
+    scales:{y:{beginAtZero:true, max:1}}}
+});
+
+new Chart(document.getElementById('pipelineCompChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UCI A','UCI B','Bonn A','Bonn B','Bonn C','Eye A','Eye B'],
+    datasets: [{label:'PR-AUC',
+      data:[0.466,0.480,0.882,0.881,0.765,0.618,0.559],
+      backgroundColor:[COLORS.blue,COLORS.blue,COLORS.green,COLORS.green,COLORS.orange,COLORS.cyan,COLORS.red]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{min:0.4, max:1}}}
+});
+
+// ── Failure Analysis charts ──────────────────────────────────────────────────
+new Chart(document.getElementById('recallChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UCI A','UCI B','Bonn A','Bonn B','Bonn C','Eye A','Eye B'],
+    datasets: [{label:'Recall',
+      data:[0.024,0.055,0.688,0.663,0.563,0.488,0.287],
+      backgroundColor:[COLORS.red,COLORS.red,COLORS.green,COLORS.green,COLORS.orange,COLORS.blue,COLORS.purple]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true, max:1}}}
+});
+
+new Chart(document.getElementById('imbalanceDropChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Baseline','SMOTE','Undersample','ClassWeight'],
+    datasets: [{label:'PR-AUC (UCI Seizure)',
+      data:[0.464,0.454,0.466,0.460],
+      backgroundColor:[COLORS.blue,COLORS.red,COLORS.green,COLORS.orange]}]
+  },
+  options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales:{y:{min:0.44, max:0.48}}}
+});
+</script>
+</body>
+</html>
